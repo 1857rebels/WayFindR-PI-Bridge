@@ -1,0 +1,15 @@
+[Unit]
+Description=Wayfindr: join the bike dash Wi-Fi (RE_*) when in range, else stay on the usual Wi-Fi
+After=NetworkManager.service
+Wants=NetworkManager.service
+
+[Service]
+EnvironmentFile=-/etc/default/wayfindr-pi
+ExecStart=/usr/bin/python3 -u /opt/wayfindr/dash_wifi.py
+# If this service stops or crashes, leave the dash so NetworkManager returns to the usual Wi-Fi.
+ExecStopPost=-/usr/bin/nmcli connection down wayfindr-dash
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

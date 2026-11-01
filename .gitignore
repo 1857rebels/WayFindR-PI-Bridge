@@ -1,0 +1,8 @@
+# The Android app has its own repository
+hus-app/
+
+# Cross-build output (aa-headless binary and aasdk libraries)
+xbuild/out/
+
+__pycache__/
+*.pyc

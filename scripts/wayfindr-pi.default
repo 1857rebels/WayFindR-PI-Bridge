@@ -1,0 +1,66 @@
+# Wayfindr on the Pi: settings for wayfindr-dash-wifi and wayfindr-dash-bridge.
+# After editing: sudo systemctl restart wayfindr-dash-wifi wayfindr-dash-bridge
+#
+# To stop the Pi ever joining the dash Wi-Fi (e.g. to get SSH back), create the file
+# /boot/firmware/wayfindr-no-dash. The SD card's boot partition opens on any PC.
+
+# Dash hotspot: any SSID starting with this prefix, and its password.
+DASH_PREFIX=RE_
+DASH_PSK=12345678
+WIFI_IFACE=wlan0
+
+# fill   = Android Auto lays out a 560x300 screen at AA_DPI 110, big enough that Maps shows its
+#          + / - buttons (the joystick taps them; RIGHT zooms in, LEFT out, DOWN re-centres).
+#          The map is placed by FILL_LAYOUT, with a blurred copy of the map around it instead
+#          of black. Needs AA_DPI=110.
+# dome   = Android Auto lays out a 560x300 screen: turn card top centre, taskbar as a side
+#          rail (cropped off). The map is moved down clear of the round screen's curved top
+#          and made as wide as the circle allows there (uses DASH_CIRCLE below).
+# circle = Android Auto lays out a square screen, shown full height in the centre of the
+#          dash; the curved top clips the turn card's corners.
+# full   = Android Auto's wide screen (turn card top right), filling the dash's 526x300.
+VIDEO_MODE=fill
+# fill only: top = Android Auto's clock, signal and phone battery in a strip above the turn
+# card; off = leave it out.
+DASH_STATUS=top
+# Visible circle of the dash in 526x300 frame pixels (centre x, centre y, radius), and how far
+# inside its edge the picture stays. Raise DASH_EDGE_INSET if the dash still clips the top.
+DASH_CIRCLE=263,257,259
+DASH_EDGE_INSET=6
+# Rows cut off the bottom of Android Auto's screen. 72 removes its taskbar (clock and app
+# icons); the sides are trimmed to match, so the dash shows the top of the screen unstretched.
+# 0 keeps the taskbar.
+VIDEO_CROP_BOTTOM=72
+# 1 = keep Android Auto connected whenever the dongle is powered, dash or not (the phone
+#     connects once and stays connected). 0 = only while on the dash; off the dash the dongle
+#     then restarts every ~14 s and the phone keeps opening and closing Android Auto.
+AA_ALWAYS=1
+# Audio Android Auto sends to the Pi (comma list of media, speech, system). The dash has no
+# speakers, so audio sent here is lost. Audio left off stays on the phone, which plays it over
+# its own Bluetooth (e.g. an intercom): media = music, speech = navigation voice.
+AA_AUDIO=system
+# App Android Auto opens full screen once connected: maps | media | phone | none
+AA_LAUNCH=maps
+VIDEO_FPS=4
+# 200k is the dash's proven rate (Wayfindr: higher overran its decoder). 300k is visibly
+# sharper if the dash copes; test on the bike before keeping it.
+VIDEO_BITRATE=200k
+# x264 speed/quality trade-off. medium is much sharper than ultrafast at the same bitrate.
+VIDEO_PRESET=medium
+# Screen density Android Auto is told. 110 with VIDEO_MODE=fill (Maps' zoom buttons show only
+# at 110 or lower); 140 for the other modes (larger text, no zoom buttons).
+AA_DPI=110
+AA_BIN=/opt/wayfindr/hu/aa-headless
+DASH_TITLE="Android Auto"
+# Route card while streaming: turn = Wayfindr's proven card (the dash shows a "depart" turn
+# circle; joystick moves reach the Pi). nosymbol = the same card with the turn symbol blanked
+# (no circle, no joystick). A hex code such as 0x0B = that turn symbol (test). none = experimental no-turn card (dash then sent no
+# left/right/down presses on 2026-10-31).
+DASH_IDLE_CARD=turn
+# Driver seat location set on the phone (Android Auto > Advanced > Driver seat location).
+# Must match: left = turn card, zoom buttons and side bar on the left; right = the original.
+AA_SEAT=left
+# Map placement on the dash for VIDEO_MODE=fill, "scale,x,y" (from the Dash Map Sizer). Empty =
+# the bridge's default for AA_SEAT (left: 0.876,87,41, right: 0.846,100,49).
+#FILL_LAYOUT=0.876,87,41
+# Reference only: the dash's own turn circle sits at x 77, y 228, diameter 139 (frame px).

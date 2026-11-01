@@ -1,0 +1,15 @@
+[Unit]
+Description=Wayfindr: forward Android Auto from the AA dongle to the bike dash
+After=wayfindr-dash-wifi.service
+
+[Service]
+EnvironmentFile=-/etc/default/wayfindr-pi
+WorkingDirectory=/opt/wayfindr
+ExecStart=/usr/bin/python3 -u /opt/wayfindr/dash_bridge.py
+KillMode=control-group
+Restart=always
+RestartSec=5
+Nice=-5
+
+[Install]
+WantedBy=multi-user.target

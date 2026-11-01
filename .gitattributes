@@ -1,0 +1,3 @@
+# Keep LF everywhere: these files run on Linux (the Pi) and Gradle scripts
+* text=auto eol=lf
+*.bat text eol=crlf
